@@ -187,7 +187,7 @@ async function connectToBrowser(chromium, cdpUrl, chromeUserDataDir) {
     return {
       context,
       close: async () => {
-        // Do not close the user-owned browser session.
+        await browser.close();
       },
     };
   } catch (error) {
@@ -342,6 +342,7 @@ async function ensureFetchHelper(page) {
 }
 
 async function apiGet(page, route, params) {
+  await ensureFetchHelper(page);
   return page.evaluate(
     async ({ routeValue, paramsValue }) => window.__xhhSts2SyncHelper.apiGet(routeValue, paramsValue),
     {
